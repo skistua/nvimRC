@@ -1,7 +1,30 @@
-require'tabline'.setup {
-    -- Defaults configuration options
-    enable = true,
-    options = {
+return {
+  { 
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 1000,
+    config =  function()
+        vim.cmd([[colorscheme gruvbox]])
+    end
+  },
+  { "folke/tokyonight.nvim", lazy = true },
+  {'nvim-tree/nvim-web-devicons', lazy = true},
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons'},
+    options = { 
+        icons_enabled = true,
+        theme = 'auto' 
+    }
+  },
+  {
+    'kdheepak/tabline.nvim',
+    dependencies = { 
+        'hoob3rt/lualine.nvim',
+        'nvim-tree/nvim-web-devicons'
+    },
+    
+    opts = {
         -- If lualine is installed tabline will use separators configured in lualine by default.
         -- These options can be used to override those settings.
         section_separators = {'', ''},
@@ -15,8 +38,13 @@ require'tabline'.setup {
         modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
         show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
     }
+  },
+  {
+      'xiyaowong/nvim-transparent',
+      lazy = true,
+      cmd = "TransparentToggle", --, "TranparentEnable",  "TranparentDisable"
+      config = function()
+          require("transparent").setup()
+      end
+  }
 }
-vim.cmd[[
-set guioptions-=e " Use showtabline in gui vim
-set sessionoptions+=tabpages,globals " store tabpages and globals in session
-]]
