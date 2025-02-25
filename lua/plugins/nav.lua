@@ -21,7 +21,12 @@ return {
             })
         end
     },
-    'simrat39/symbols-outline.nvim' ,
+    {
+        'simrat39/symbols-outline.nvim' ,
+        config = function()
+            require('symbols-outline').setup()
+        end
+    },
     {
         'nvim-telescope/telescope.nvim', tag = '0.1.8',
         dependencies = { {'nvim-lua/plenary.nvim'} },
