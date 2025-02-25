@@ -23,7 +23,7 @@ return {
                 height = 0.9,
                 width = 0.9,
             },
-            cmd = '/usr/bin/bash'
+            cmd = os.getenv('SHELL')
         })
 
         vim.keymap.set('n', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
