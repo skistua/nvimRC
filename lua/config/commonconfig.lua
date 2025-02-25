@@ -67,6 +67,7 @@ vim.api.nvim_exec([[
   augroup hlsl
     autocmd!
     autocmd BufRead,BufNewFile *.hlsl set filetype=hlsl
+    autocmd BufRead,BufNewFile *.shader set filetype=hlsl
   augroup END
 ]], false)
 

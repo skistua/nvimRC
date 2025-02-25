@@ -19,6 +19,7 @@ require('config/commonconfig')
 
 -- Setup lazy.nvim
 require("lazy").setup({
+  version = false,
   spec = {
     -- import your plugins
     { import = "plugins" },
