@@ -1,12 +1,11 @@
 return {
-
-  'preservim/nerdcommenter',
-  'tpope/vim-surround',
-  {
-	"windwp/nvim-autopairs",
-    config = function() require("nvim-autopairs").setup {} end
-  },
-  { 'lukas-reineke/indent-blankline.nvim',
+    'preservim/nerdcommenter',
+    'tpope/vim-surround',
+    {
+        "windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end
+    },
+    { 'lukas-reineke/indent-blankline.nvim',
     config = function()
         require("ibl").setup {
             scope = {
@@ -14,8 +13,8 @@ return {
             }
         }
     end
-  },
-  {
+},
+{
     "numToStr/FTerm.nvim",
     config = function()
         require'FTerm'.setup({
@@ -32,5 +31,5 @@ return {
         vim.keymap.set('n', '<M-i>', '<CMD>lua require("FTerm").toggle()<CR>')
         vim.keymap.set('t', '<M-i>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
     end
-  }
+}
 }
