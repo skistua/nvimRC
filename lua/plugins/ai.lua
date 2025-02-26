@@ -70,16 +70,64 @@ return {
             },
         },
     },
-
     {
-        'Exafunction/codeium.vim',
-        config = function ()
-            vim.g.codeium_disable_bindings = 1
-            -- Change '<C-g>' here to any keycode you like.
-            vim.keymap.set('i', '<M-v>', function () return vim.fn['codeium#Accept']() end, { expr = true })
-            vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-            vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-            vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+        'huggingface/llm.nvim',
+        config = function()
+            local llm = require('llm')
+            llm.setup({
+            api_token = 'sk-bxamionvdhhvnjdjrneadewovsvetvewqfiokpdzniepbzei', -- cf Install paragraph
+            model = "Qwen/Qwen2.5-Coder-32B-Instruct", -- the model ID, behavior depends on backend
+            backend = "openai", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
+            url = "https://api.siliconflow.cn", -- the http url of the backend
+            tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
+            -- parameters that are added to the request body, values are arbitrary, you can set any field:value pair here it will be passed as is to the backend
+            request_body = {
+                parameters = {
+                    max_new_tokens = 100,
+                    temperature = 0.2,
+                    top_p = 0.95,
+                },
+            },
+            -- set this if the model supports fill in the middle
+            fim = {
+                enabled = true,
+                prefix = "<|fim_prefix|>",
+                middle = "<|fim_middle|>",
+                suffix = "<|fim_suffix|>",
+            },
+            debounce_ms = 300,
+            accept_keymap = "<M-\\>",
+            dismiss_keymap = "<S-Tab>",
+            tls_skip_verify_insecure = false,
+            -- llm-ls configuration, cf llm-ls section
+            lsp = {
+                bin_path = (function ()
+                    local os = vim.loop.os_uname().sysname
+                    if os == "Windows_NT" then
+                       return vim.fn.stdpath('data') .. "/mason/bin/llm-ls.cmd"
+                    else
+                       return vim.fn.stdpath('data') .. "/mason/bin/llm-ls"
+                    end
+
+                end)()
+            },
+            tokenizer = nil, -- cf Tokenizer paragraph
+            context_window = 1024, -- max number of tokens for the context window
+            enable_suggestions_on_startup = true,
+            enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
+            disable_url_path_completion = false, -- cf Backend
+            })
         end
     }
+    --{
+        --'Exafunction/codeium.vim',
+        --config = function ()
+            --vim.g.codeium_disable_bindings = 1
+            ---- Change '<C-g>' here to any keycode you like.
+            --vim.keymap.set('i', '<M-v>', function () return vim.fn['codeium#Accept']() end, { expr = true })
+            --vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+            --vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+            --vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+        --end
+    --}
 }
