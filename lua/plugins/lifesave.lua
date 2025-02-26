@@ -18,7 +18,14 @@ return {
   "keaising/im-select.nvim",
   lazy = false,
   opts = {
-    default_im_select = "com.apple.keylayout.ABC",
+      default_im_select = (function ()
+        local os_name = vim.loop.os_uname().sysname
+        if os_name == "Windows_NT" then
+            return "1003"
+        else
+            return  "com.apple.keylayout.ABC"
+        end
+      end)(),
     default_command = "im-select",
   },
 },
