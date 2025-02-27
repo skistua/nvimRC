@@ -75,7 +75,7 @@ return {
         config = function()
             local llm = require('llm')
             llm.setup({
-            api_token = 'sk-bxamionvdhhvnjdjrneadewovsvetvewqfiokpdzniepbzei', -- cf Install paragraph
+            api_token = os.getenv('SF_API_KEY'),
             model = "Qwen/Qwen2.5-Coder-32B-Instruct", -- the model ID, behavior depends on backend
             backend = "openai", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
             url = "https://api.siliconflow.cn", -- the http url of the backend
@@ -96,7 +96,7 @@ return {
                 suffix = "<|fim_suffix|>",
             },
             debounce_ms = 300,
-            accept_keymap = "<M-\\>",
+            accept_keymap = "<M-o>",
             dismiss_keymap = "<S-Tab>",
             tls_skip_verify_insecure = false,
             -- llm-ls configuration, cf llm-ls section
