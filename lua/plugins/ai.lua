@@ -4,14 +4,21 @@ return {
         event = "VeryLazy",
         lazy = false,
         version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
-        opts = {
-            provider = "sfQwen",
+        config = {
+            provider = "deepseek",
+            auto_suggestions_provider = "sfQwenCode",
             vendors = {
                 sfQwen = {
                     __inherited_from = "openai",
                     api_key_name = "SF_API_KEY",
                     endpoint = "https://api.siliconflow.cn/v1",
                     model = "Qwen/Qwen2.5-32B-Instruct",
+                },
+                sfQwenCode = {
+                    __inherited_from = "openai",
+                    api_key_name = "SF_API_KEY",
+                    endpoint = "https://api.siliconflow.cn/v1",
+                    model = "Qwen/Qwen2.5-Coder-7B-Instruct",
                 },
                 deepseek = {
                     __inherited_from = "openai",
@@ -20,6 +27,9 @@ return {
                     model = "deepseek-chat",
                 },
             },
+            behaviour = {
+                auto_suggestions = true
+            }
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = (function()
@@ -70,55 +80,55 @@ return {
             },
         },
     },
-    {
-        'huggingface/llm.nvim',
-        config = function()
-            local llm = require('llm')
-            llm.setup({
-            api_token = os.getenv('SF_API_KEY'),
-            model = "Qwen/Qwen2.5-Coder-32B-Instruct", -- the model ID, behavior depends on backend
-            backend = "openai", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
-            url = "https://api.siliconflow.cn", -- the http url of the backend
-            tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
-            -- parameters that are added to the request body, values are arbitrary, you can set any field:value pair here it will be passed as is to the backend
-            request_body = {
-                parameters = {
-                    max_new_tokens = 100,
-                    temperature = 0.2,
-                    top_p = 0.95,
-                },
-            },
-            -- set this if the model supports fill in the middle
-            fim = {
-                enabled = true,
-                prefix = "<|fim_prefix|>",
-                middle = "<|fim_middle|>",
-                suffix = "<|fim_suffix|>",
-            },
-            debounce_ms = 300,
-            accept_keymap = "<M-o>",
-            dismiss_keymap = "<S-Tab>",
-            tls_skip_verify_insecure = false,
-            -- llm-ls configuration, cf llm-ls section
-            lsp = {
-                bin_path = (function ()
-                    local os = vim.loop.os_uname().sysname
-                    if os == "Windows_NT" then
-                       return vim.fn.stdpath('data') .. "/mason/bin/llm-ls.cmd"
-                    else
-                       return vim.fn.stdpath('data') .. "/mason/bin/llm-ls"
-                    end
+    --{
+        --'huggingface/llm.nvim',
+        --opts = function()
+            --local llm = require('llm')
+            --llm.setup({
+            --api_token = os.getenv('SF_API_KEY'),
+            --model = "Qwen/Qwen2.5-Coder-32B-Instruct", -- the model ID, behavior depends on backend
+            --backend = "openai", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
+            --url = "https://api.siliconflow.cn", -- the http url of the backend
+            --tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
+            ---- parameters that are added to the request body, values are arbitrary, you can set any field:value pair here it will be passed as is to the backend
+            --request_body = {
+                --parameters = {
+                    --max_new_tokens = 100,
+                    --temperature = 0.2,
+                    --top_p = 0.95,
+                --},
+            --},
+            ---- set this if the model supports fill in the middle
+            --fim = {
+                --enabled = true,
+                --prefix = "<|fim_prefix|>",
+                --middle = "<|fim_middle|>",
+                --suffix = "<|fim_suffix|>",
+            --},
+            --debounce_ms = 300,
+            --accept_keymap = "<M-o>",
+            --dismiss_keymap = "<S-Tab>",
+            --tls_skip_verify_insecure = false,
+            ---- llm-ls configuration, cf llm-ls section
+            --lsp = {
+                --bin_path = (function ()
+                    --local os = vim.loop.os_uname().sysname
+                    --if os == "Windows_NT" then
+                       --return vim.fn.stdpath('data') .. "/mason/bin/llm-ls.cmd"
+                    --else
+                       --return vim.fn.stdpath('data') .. "/mason/bin/llm-ls"
+                    --end
 
-                end)()
-            },
-            tokenizer = nil, -- cf Tokenizer paragraph
-            context_window = 1024, -- max number of tokens for the context window
-            enable_suggestions_on_startup = true,
-            enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
-            disable_url_path_completion = false, -- cf Backend
-            })
-        end
-    }
+                --end)()
+            --},
+            --tokenizer = nil, -- cf Tokenizer paragraph
+            --context_window = 1024, -- max number of tokens for the context window
+            --enable_suggestions_on_startup = true,
+            --enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
+            --disable_url_path_completion = false, -- cf Backend
+            --})
+        --end
+    --}
     --{
         --'Exafunction/codeium.vim',
         --config = function ()
