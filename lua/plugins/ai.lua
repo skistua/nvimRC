@@ -7,7 +7,7 @@ return {
         config = {
             provider = "deepseek",
             auto_suggestions_provider = "sfQwenCode",
-            vendors = {
+            providers = {
                 sfQwen = {
                     __inherited_from = "openai",
                     api_key_name = "SF_API_KEY",
